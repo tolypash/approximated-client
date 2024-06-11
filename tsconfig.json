@@ -5,7 +5,7 @@
     "removeComments": false,
     "sourceMap": true,
     "target": "ES6",
-    "outDir": "lib",
+    "outDir": "build",
     "moduleResolution": "node",
     "declaration": true
   },

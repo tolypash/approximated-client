@@ -16,7 +16,7 @@ pids
 *.seed
 *.pid.lock
 
-lib
+build
 
 # Coverage directory used by tools like istanbul
 coverage
