@@ -1,5 +1,4 @@
 import {
-  APIResponse,
   CheckDNSRecordsExistRequest,
   CheckDNSRecordsExistResponse,
   CheckDNSRecordsMatchExactlyRequest,
@@ -82,32 +81,32 @@ export class ApproximatedClient {
   public async createVirtualHost(
     req: CreateVirtualHostRequest
   ): Promise<CreateVirtualHostResponse> {
-    return await this.fetch<APIResponse<CreateVirtualHostResponse>>({
+    return await this.fetch<CreateVirtualHostResponse>({
       path: "/vhosts",
       method: "POST",
       body: JSON.stringify(req),
-    }).then((res) => res.data);
+    }).then((res) => res);
   }
 
   /** https://approximated.app/docs/#read-virtual-host */
   public async getVirtualHost(
     req: GetVirtualHostRequest
   ): Promise<GetVirtualHostResponse> {
-    return await this.fetch<APIResponse<GetVirtualHostResponse>>({
+    return await this.fetch<GetVirtualHostResponse>({
       path: "/vhosts/by/incoming/" + req.incoming_address,
       method: "GET",
-    }).then((res) => res.data);
+    }).then((res) => res);
   }
 
   /** https://approximated.app/docs/#update-virtual-host */
   public async updateVirtualHost(
     req: UpdateVirtualHostRequest
   ): Promise<UpdateVirtualHostResponse> {
-    return await this.fetch<APIResponse<UpdateVirtualHostResponse>>({
+    return await this.fetch<UpdateVirtualHostResponse>({
       path: "/vhosts/update/by/incoming",
       method: "POST",
       body: JSON.stringify(req),
-    }).then((res) => res.data);
+    }).then((res) => res);
   }
 
   /** https://approximated.app/docs/#delete-virtual-host */
