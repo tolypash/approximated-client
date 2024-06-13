@@ -13,7 +13,7 @@ import {
   UpdateVirtualHostResponse,
 } from "./types";
 
-const defaultFetch = require("node-fetch")
+import { BodyInit, default as defaultFetch } from "node-fetch";
 
 export const DEFAULT_APPROXIMATED_API_BASE_URL =
   "https://cloud.approximated.app/api";
@@ -49,7 +49,7 @@ export class ApproximatedClient {
     path: string;
     text?: boolean;
     method: RequestInit["method"];
-    body?: RequestInit["body"];
+    body?: BodyInit;
   }): Promise<T> {
     const res = await defaultFetch(`${this.baseURL}${path}`, {
       headers: {
