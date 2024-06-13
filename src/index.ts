@@ -37,6 +37,8 @@ export class ApproximatedClient {
       throw new Error("apiKey is required");
     }
 
+    this.apiKey = options.apiKey;
+
     if (options.baseURL) {
       this.baseURL = options.baseURL;
     }
@@ -53,7 +55,7 @@ export class ApproximatedClient {
   }): Promise<T> {
     const res = await defaultFetch(`${this.baseURL}${path}`, {
       headers: {
-        "api-key": `Bearer ${this.apiKey}`,
+        "api-key": this.apiKey,
         "Content-Type": "application/json",
         Accept: "application/json",
       },
@@ -61,7 +63,12 @@ export class ApproximatedClient {
     });
 
     if (!res.ok) {
-      throw new Error("Failed to fetch");
+      try {
+        const text = await res.text();
+        throw new Error(`HTTP Error: ${res.status} - ${text}`);
+      } catch (e) {
+        throw new Error(`HTTP Error: ${res.status}`);
+      }
     }
 
     if (options.text) {
@@ -87,7 +94,7 @@ export class ApproximatedClient {
     req: GetVirtualHostRequest
   ): Promise<GetVirtualHostResponse> {
     return await this.fetch<APIResponse<GetVirtualHostResponse>>({
-      path: "vhosts/by/incoming/" + req.incoming_address,
+      path: "/vhosts/by/incoming/" + req.incoming_address,
       method: "GET",
     }).then((res) => res.data);
   }
