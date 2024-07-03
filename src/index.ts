@@ -51,6 +51,7 @@ export class ApproximatedClient {
     text?: boolean;
     method: RequestInit["method"];
     body?: BodyInit;
+    throwsErrorResponse?: boolean;
   }): Promise<T> {
     const res = await defaultFetch(`${this.baseURL}${path}`, {
       headers: {
@@ -62,11 +63,14 @@ export class ApproximatedClient {
     });
 
     if (!res.ok) {
-      try {
+      if (options.throwsErrorResponse) {
+        const json = await res.json();
+
+        throw json;
+      } else {
         const text = await res.text();
-        throw new Error(`HTTP Error: ${res.status} - ${text}`);
-      } catch (e) {
-        throw new Error(`HTTP Error: ${res.status}`);
+
+        throw new Error(text);
       }
     }
 
@@ -77,7 +81,11 @@ export class ApproximatedClient {
     }
   }
 
-  /** https://approximated.app/docs/#create-virtual-host */
+  /**
+   * https://approximated.app/docs/#create-virtual-host
+   *
+   * @throws {APIErrorsResponse}
+   */
   public async createVirtualHost(
     req: CreateVirtualHostRequest
   ): Promise<CreateVirtualHostResponse> {
@@ -85,6 +93,7 @@ export class ApproximatedClient {
       path: "/vhosts",
       method: "POST",
       body: JSON.stringify(req),
+      throwsErrorResponse: true,
     }).then((res) => res);
   }
 
@@ -114,7 +123,7 @@ export class ApproximatedClient {
     req: DeleteVirtualHostRequest
   ): Promise<string> {
     return await this.fetch<string>({
-      path: "/vhosts/delete/by/incoming" + req.incoming_address,
+      path: "/vhosts/by/incoming/" + req.incoming_address,
       method: "DELETE",
       text: true,
     }).then((res) => res);

@@ -2,6 +2,12 @@ export interface APIResponse<T> {
   data: T;
 }
 
+export interface APIErrorsResponse {
+  errors: {
+    [field: string]: string[];
+  };
+}
+
 export type CreateVirtualHostRequest = {
   /** The custom domain that you'd like to route. */
   incoming_address: string;
