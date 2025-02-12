@@ -1,6 +1,6 @@
 # approximated-client
 
-Client for approximated.app written in TypeScript
+Client for [approximated.app](approximated.app) written in TypeScript
 
 ## Installation
 
